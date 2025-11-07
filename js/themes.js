@@ -5,7 +5,7 @@ export const THEMES = {
     subtitle: '立冬，是“冬之始也”。收起秋意，且把温暖留在心里。',
     tagline: '一候水始冰，二候地始冻，三候雉入大水为蜃。',
     audio: './assets/audio/xuehua.mp3',
-    vars: { /* 可留空：颜色由 CSS data-theme 提供 */ },
+    vars: {}, // 若需特定 CSS 变量可写入，如 {"--accent":"#xxxxxx"}
     snow: { densityFactor: 1.0, speed: 1.0, drift: 1.0 }
   },
   dengying: {

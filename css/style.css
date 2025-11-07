@@ -12,14 +12,27 @@
   --radius-xl: 22px;
   --radius-lg: 16px;
   --radius-md: 12px;
+
+  /* 背景图片层（每个主题覆盖） */
+  --bg-image: none;
 }
+
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0; color:var(--ink);
+  /* 背景：顶层高光、其下渐变、底层主题背景图 */
   background:
     radial-gradient(1200px 600px at 80% -10%, rgba(255,255,255,0.9), transparent 60%),
-    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 40%, var(--bg-btm) 100%);
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 40%, var(--bg-btm) 100%),
+    var(--bg-image);
+  background-size: 100% 100%, 100% 100%, cover;
+  background-position: center, center, center;
+  /* 第三层背景图在部分移动端对 fixed 支持不佳，改为 scroll 提升兼容性 */
+  background-attachment: fixed, fixed, scroll;
+  /* 让中间的线性渐变与底层图片进行柔和混合，避免遮挡图片 */
+  background-blend-mode: normal, soft-light, normal;
+
   font-family: "STKaiti", "KaiTi", "Kaiti SC", "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
   line-height:1.6; overflow-x:hidden;
 }
@@ -55,8 +68,47 @@ footer{ padding:22px; text-align:center; font-size:12px; color:#556088 }
 @media (prefers-reduced-motion: reduce){ .subtitle{ animation:none; opacity:1; transform:none } .flake-bg{ animation: none } #snow{ display:none } }
 @media (max-width:540px){ .ornaments{ grid-template-columns: repeat(2, 1fr) } header{ padding-bottom: 8px } }
 
-/* 主题变量：通过设置 <body data-theme="…"> 或 JS 注入 CSS 变量实现；默认由 JS 写入 */
-body[data-theme="xuehua"]{ --bg-top:#eaf3ff; --bg-mid:#f7f0ff; --bg-btm:#ffe8f3; --accent:#5b7bb9; --ink:#1f2a44; --ink-soft:#3d4a6a }
-body[data-theme="dengying"]{ --bg-top:#fff0f0; --bg-mid:#ffe3d9; --bg-btm:#ffd4b8; --accent:#d03a2f; --ink:#332222; --ink-soft:#614040 }
-body[data-theme="meixiang"]{ --bg-top:#fff1f6; --bg-mid:#ffe4f1; --bg-btm:#ffd9ec; --accent:#c85c8e; --ink:#3a2432; --ink-soft:#5a3a4a }
-body[data-theme="dongzhuan"]{ --bg-top:#fff7e8; --bg-mid:#ffeacf; --bg-btm:#ffdfb6; --accent:#b57a3f; --ink:#3a2a18; --ink-soft:#5b4330 }
+/* 主题变量：通过设置 <body data-theme="…"> 覆盖。并指定各自背景图 */
+body[data-theme="xuehua"]{
+  --bg-top:#eaf3ff; --bg-mid:#f7f0ff; --bg-btm:#ffe8f3; --accent:#5b7bb9; --ink:#1f2a44; --ink-soft:#3d4a6a;
+  --bg-image: url("../assets/bg/xuehua.jpg");
+}
+body[data-theme="dengying"]{
+  --bg-top:#fff0f0; --bg-mid:#ffe3d9; --bg-btm:#ffd4b8; --accent:#d03a2f; --ink:#332222; --ink-soft:#614040;
+  --bg-image: url("../assets/bg/dengying.jpg");
+}
+body[data-theme="meixiang"]{
+  --bg-top:#fff1f6; --bg-mid:#ffe4f1; --bg-btm:#ffd9ec; --accent:#c85c8e; --ink:#3a2432; --ink-soft:#5a3a4a;
+  --bg-image: url("../assets/bg/meixiang.jpg");
+}
+body[data-theme="dongzhuan"]{
+  --bg-top:#fff7e8; --bg-mid:#ffeacf; --bg-btm:#ffdfb6; --accent:#b57a3f; --ink:#3a2a18; --ink-soft:#5b4330;
+  --bg-image: url("../assets/bg/dongzhuan.jpg");
+}
+
+/* 页面切换时的柔和过渡（叠加在 reveal 之上） */
+body.switching .hero{ animation: cardGlow 900ms ease both }
+@keyframes cardGlow{
+  0%{ box-shadow: 0 0 0 rgba(0,0,0,0) }
+  30%{ box-shadow: 0 18px 60px rgba(31,42,68,0.25) }
+  100%{ box-shadow: var(--shadow) }
+}
+
+/* 主题“揭示”特效层：底部左→右扫过的光幕 */
+#themeReveal{
+  position: fixed; left: -20%; bottom: -10%;
+  width: 140%; height: 120%;
+  pointer-events: none; z-index: 8; opacity: 0;
+  background:
+    radial-gradient(60% 30% at 0% 100%, rgba(255,255,255,0.85), rgba(255,255,255,0) 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
+  mix-blend-mode: screen;
+  transform: translateX(-110%) rotate(-2deg);
+  filter: blur(0.5px);
+}
+#themeReveal.revealing{ animation: revealSweep 900ms cubic-bezier(.2,.8,.2,1) forwards }
+@keyframes revealSweep{
+  0%{ opacity:.0; transform: translateX(-110%) rotate(-2deg) }
+  10%{ opacity:.95 }
+  100%{ opacity:0; transform: translateX(10%) rotate(-2deg) }
+}

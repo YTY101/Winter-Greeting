@@ -15,7 +15,13 @@ export class SnowEngine {
   }
   _makeFlake(){
     const {W,H} = this;
-    return { x: Math.random()*W, y: Math.random()*H, r: Math.random()*2.1+0.6, vy: (Math.random()*0.8+0.25)*this.opts.speed, vx: (Math.random()-0.5)*0.4*this.opts.drift, a: Math.random()*Math.PI*2 };
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*2.1+0.6,
+      vy: (Math.random()*0.8+0.25)*this.opts.speed,
+      vx: (Math.random()-0.5)*0.4*this.opts.drift,
+      a: Math.random()*Math.PI*2
+    };
   }
   _resize(){
     this.W = this.canvas.width = window.innerWidth;

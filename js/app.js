@@ -34,6 +34,7 @@ const els = {
   musicVolume: document.getElementById('musicVolume'),
   chips: Array.from(document.querySelectorAll('.chip-btn')),
   snow: document.getElementById('snow'),
+  reveal: document.getElementById('themeReveal'),
 };
 
 els.year.textContent = new Date().getFullYear();
@@ -47,30 +48,58 @@ const savedTheme = localStorage.getItem('theme') || DEFAULT_THEME;
 const savedVol = parseFloat(localStorage.getItem('volume') || '0.6');
 audio.setVolume(savedVol); els.musicVolume.value = String(savedVol);
 
+// 辅助：按钮 pressed 状态
 function setPressed(theme){
   els.chips.forEach(btn=>btn.setAttribute('aria-pressed', String(btn.dataset.theme===theme)));
 }
 
+// 主题揭示动效（底部左→右扫过）
+function runReveal(){
+  els.reveal.classList.remove('revealing');
+  // 强制重排以重启动画
+  void els.reveal.offsetWidth;
+  els.reveal.classList.add('revealing');
+}
+
+// 应用主题：颜色/文案/雪效/音乐 + 动效协调
 async function applyTheme(theme){
   const conf = THEMES[theme] || THEMES[DEFAULT_THEME];
-  document.body.setAttribute('data-theme', theme);
+
+  // 动效：先启动 reveal（在底部从左到右扫过）
+  document.body.classList.add('switching');
+  runReveal();
+
+  // 稍作延迟，让“揭示”先出现一点，再切换实际主题，获得更自然的“覆盖”感觉
+  setTimeout(()=>{ document.body.setAttribute('data-theme', theme); }, 120);
+
   // 可选：按需写入 CSS 变量（大部分色彩由 CSS data-theme 提供）
   if(conf.vars){ for(const [k,v] of Object.entries(conf.vars)){ document.documentElement.style.setProperty(k, v); } }
+
   // 文案
   els.tagline.textContent = conf.tagline || '';
   typeText(els.subtitle, conf.subtitle || '', 22);
+
   // 雪效参数
   snow.applyThemeOptions(conf.snow);
-  // 音乐
-  await audio.setSrcAndPlay(conf.audio);
+
+  // 音乐：尊重当前播放状态（若暂停则不自动播放）
+  await audio.setSrcRespectingPlayback(conf.audio);
+
   // 状态&持久化
-  setPressed(theme); localStorage.setItem('theme', theme);
+  setPressed(theme);
+  localStorage.setItem('theme', theme);
+
+  // 同步按钮文案
+  els.musicToggle.textContent = audio.isPlaying() ? '⏸ 暂停音乐' : '🎵 背景音乐';
+
+  // 清理切换标记
+  setTimeout(()=>{ document.body.classList.remove('switching'); }, 950);
 }
 
 // 主题按钮事件
 els.chips.forEach(btn=>{
   btn.addEventListener('click', async ()=>{
-    audio.resumeContext(); // 标记已有用户交互
+    audio.resumeContext(); // 标记已有用户交互（移动端）
     await applyTheme(btn.dataset.theme);
   });
 });
@@ -83,14 +112,16 @@ els.newBlessing.addEventListener('click', ()=>{
   setTimeout(()=>{ typeText(els.blessing, text, 26); els.blessing.style.opacity = 1; }, 180);
 });
 
-// 音乐开关/音量
-els.musicToggle.addEventListener('click', ()=>{
+// 音乐开关/音量（淡入/淡出）
+els.musicToggle.addEventListener('click', async ()=>{
   audio.resumeContext();
-  const playing = audio.toggle();
+  const playing = await audio.toggle();
   els.musicToggle.textContent = playing ? '⏸ 暂停音乐' : '🎵 背景音乐';
 });
 els.musicVolume.addEventListener('input', e=>{
-  const v = parseFloat(e.target.value); audio.setVolume(v); localStorage.setItem('volume', String(v));
+  const v = parseFloat(e.target.value);
+  audio.setVolume(v);
+  localStorage.setItem('volume', String(v));
 });
 
 // 初次应用主题
