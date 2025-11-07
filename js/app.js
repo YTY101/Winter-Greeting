@@ -90,7 +90,7 @@ async function applyTheme(theme){
   localStorage.setItem('theme', theme);
 
   // 同步按钮文案
-  els.musicToggle.textContent = audio.isPlaying() ? '⏸ 暂停音乐' : '🎵 背景音乐';
+  els.musicToggle.textContent = audio.isPlaying() ? '⏸ Pause' : '🎵 Play';
 
   // 清理切换标记
   setTimeout(()=>{ document.body.classList.remove('switching'); }, 950);
@@ -116,7 +116,7 @@ els.newBlessing.addEventListener('click', ()=>{
 els.musicToggle.addEventListener('click', async ()=>{
   audio.resumeContext();
   const playing = await audio.toggle();
-  els.musicToggle.textContent = playing ? '⏸ 暂停音乐' : '🎵 背景音乐';
+  els.musicToggle.textContent = playing ? '⏸ Pause' : '🎵 Play';
 });
 els.musicVolume.addEventListener('input', e=>{
   const v = parseFloat(e.target.value);
