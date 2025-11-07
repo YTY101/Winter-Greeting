@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#eaf3ff" />
-  <title>立冬祝福 · Start of Winter Blessings</title>
+  <title>立冬 · Blessings</title>
   <meta name="description" content="立冬快乐！愿你冬日温暖如春。Start of Winter blessings with animated snow, modern Chinese aesthetic, and warm wishes."/>
   <link rel="stylesheet" href="./css/style.css" />
 </head>
@@ -17,12 +17,17 @@
     <header>
       <div class="brand">
         <div class="seal" aria-hidden="true"></div>
-        <div>立冬 · Blessings</div>
+        <div>
+            <div>Blessings</div>
+            <div>From YTY</div>
+
+        </div>
+
       </div>
       <div class="controls">
         <button id="musicToggle" class="btn" aria-label="播放或暂停背景音乐">🎵 背景音乐</button>
         <label class="volume">
-          <span>音量</span>
+          <!-- <span>音量</span> -->
           <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.6" />
         </label>
       </div>
@@ -31,8 +36,7 @@
     <main>
       <section class="hero" aria-label="Start of Winter greetings">
         <div class="flake-bg" aria-hidden="true"></div>
-        <h1 class="title">立冬快乐！愿你冬日温暖如春。</h1>
-        <p id="subtitle" class="subtitle" aria-live="polite"></p>
+        <h1 id="title" class="title" aria-live="polite"></h1>
         <div id="tagline" class="tagline">一候水始冰，二候地始冻，三候雉入大水为蜃。</div>
 
         <!-- 四主题：点击切换页面风格 + 背景音乐 + 背景图 -->
@@ -86,10 +90,10 @@
 
         <!-- Blessing card -->
         <div class="blessing-card" role="region" aria-label="Warm blessing">
-          <div id="blessing" class="blessing-text">点击下方按钮，收下一句冬日祝福。</div>
+          <div id="blessing" class="blessing-text">点击按钮，收下一句冬日祝福。</div>
           <div class="actions">
-            <button id="newBlessing" class="btn" type="button" aria-label="随机祝福">收下祝福</button>
-            <span class="note">温柔提示：点击主题按钮可切换风格与音乐</span>
+            <button id="newBlessing" class="btn" type="button" aria-label="随机祝福">收下</button>
+            <!-- <span class="note">温柔提示：点击主题按钮可切换风格与音乐</span> -->
           </div>
         </div>
       </section>

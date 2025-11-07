@@ -25,7 +25,7 @@ const blessings = [
 ];
 
 const els = {
-  subtitle: document.getElementById('subtitle'),
+  title: document.getElementById('title') || document.querySelector('.title'),
   tagline: document.getElementById('tagline'),
   blessing: document.getElementById('blessing'),
   newBlessing: document.getElementById('newBlessing'),
@@ -75,9 +75,9 @@ async function applyTheme(theme){
   // 可选：按需写入 CSS 变量（大部分色彩由 CSS data-theme 提供）
   if(conf.vars){ for(const [k,v] of Object.entries(conf.vars)){ document.documentElement.style.setProperty(k, v); } }
 
-  // 文案
+  // 文案（主标题随主题变化）
   els.tagline.textContent = conf.tagline || '';
-  typeText(els.subtitle, conf.subtitle || '', 22);
+  typeText(els.title, conf.subtitle || '', 22);
 
   // 雪效参数
   snow.applyThemeOptions(conf.snow);

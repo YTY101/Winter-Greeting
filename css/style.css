@@ -2,6 +2,10 @@
   --bg-top: #eaf3ff;         /* pale blue */
   --bg-mid: #f7f0ff;         /* faint lilac */
   --bg-btm: #ffe8f3;         /* soft pink */
+  /* 半透明版本用于与底图叠加，保留柔和色调 */
+  --bg-top-a: #eaf3ffcc;
+  --bg-mid-a: #f7f0ffcc;
+  --bg-btm-a: #ffe8f3cc;
   --ink: #1f2a44;            /* deep ink */
   --ink-soft:#3d4a6a;
   --accent:#b22234;          /* lantern red */
@@ -24,14 +28,14 @@ body{
   /* 背景：顶层高光、其下渐变、底层主题背景图 */
   background:
     radial-gradient(1200px 600px at 80% -10%, rgba(255,255,255,0.9), transparent 60%),
-    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 40%, var(--bg-btm) 100%),
+    linear-gradient(180deg, var(--bg-top-a) 0%, var(--bg-mid-a) 40%, var(--bg-btm-a) 100%),
     var(--bg-image);
   background-size: 100% 100%, 100% 100%, cover;
   background-position: center, center, center;
   /* 第三层背景图在部分移动端对 fixed 支持不佳，改为 scroll 提升兼容性 */
   background-attachment: fixed, fixed, scroll;
-  /* 让中间的线性渐变与底层图片进行柔和混合，避免遮挡图片 */
-  background-blend-mode: normal, soft-light, normal;
+  /* 不使用混合模式，直接以半透明渐变覆盖底图，保留色调与图像 */
+  background-blend-mode: normal, normal, normal;
 
   font-family: "STKaiti", "KaiTi", "Kaiti SC", "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
   line-height:1.6; overflow-x:hidden;
@@ -46,9 +50,8 @@ header{position:relative; padding:28px clamp(16px, 4vw, 48px); display:flex; ali
 .volume{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:#5b6a91}
 main{position:relative; padding: clamp(18px, 3.5vw, 32px); display:grid; place-items:center}
 .hero{position:relative; width:min(960px, 95vw); background: var(--card); backdrop-filter: blur(10px) saturate(125%); -webkit-backdrop-filter: blur(10px) saturate(125%); border-radius: var(--radius-xl); box-shadow: var(--shadow); padding: clamp(22px, 5.5vw, 48px); overflow:hidden; isolation:isolate}
-.title{margin:0 0 8px 0; font-size: clamp(28px, 5vw, 56px); line-height:1.1; font-weight:800; letter-spacing:1px; color: transparent; background: linear-gradient(90deg, var(--ink) 0%, #2b3550 50%, var(--ink) 100%); -webkit-background-clip:text; background-clip:text; text-shadow: 0 2px 0 rgba(255,255,255,0.25)}
-.subtitle{font-size: clamp(16px, 2.4vw, 22px); color: var(--ink-soft); margin: 6px 0 14px 0; opacity:0; transform: translateY(6px); animation: fadeUp 800ms ease forwards 200ms}
-.tagline{font-size: 14px; color:#44537a; opacity:0.9; letter-spacing: 0.5px; margin-bottom: 18px}
+.title{margin:0 0 10px 0; font-size: clamp(26px, 4.4vw, 44px); line-height:1.15; font-weight:800; letter-spacing:.5px; color: transparent; background: linear-gradient(90deg, var(--ink) 0%, #2b3550 50%, var(--ink) 100%); -webkit-background-clip:text; background-clip:text; text-shadow: 0 2px 0 rgba(255,255,255,0.25)}
+.tagline{font-size: 14px; color:#44537a; opacity:0.9; letter-spacing: 0.5px; margin: 8px 0 18px}
 .ornaments{display:grid; grid-template-columns: repeat(4, minmax(72px, 1fr)); gap:14px; margin: 18px 0 22px 0}
 .chip-btn{background: var(--card-strong); border:0; border-radius: var(--radius-lg); padding:12px; display:flex; align-items:center; gap:10px; box-shadow: var(--shadow); justify-content:center; cursor:pointer; color:var(--ink-soft); transition:transform .15s ease, box-shadow .2s ease, outline-offset .15s}
 .chip-btn[aria-pressed="true"], .chip-btn:hover{transform: translateY(-1px); box-shadow: 0 2px 0 #fff inset, 0 0 0 6px rgba(178,34,52,0.25), var(--shadow)}
@@ -71,23 +74,27 @@ footer{ padding:22px; text-align:center; font-size:12px; color:#556088 }
 /* 主题变量：通过设置 <body data-theme="…"> 覆盖。并指定各自背景图 */
 body[data-theme="xuehua"]{
   --bg-top:#eaf3ff; --bg-mid:#f7f0ff; --bg-btm:#ffe8f3; --accent:#5b7bb9; --ink:#1f2a44; --ink-soft:#3d4a6a;
+  --bg-top-a:#eaf3ff11; --bg-mid-a:#f7f0ffb3; --bg-btm-a:#ffe8f3b3;
   --bg-image: url("../assets/bg/xuehua.jpg");
 }
 body[data-theme="dengying"]{
   --bg-top:#fff0f0; --bg-mid:#ffe3d9; --bg-btm:#ffd4b8; --accent:#d03a2f; --ink:#332222; --ink-soft:#614040;
+  --bg-top-a:#fff0f011; --bg-mid-a:#ffe3d9b3; --bg-btm-a:#ffd4b8b3;
   --bg-image: url("../assets/bg/dengying.jpg");
 }
 body[data-theme="meixiang"]{
   --bg-top:#fff1f6; --bg-mid:#ffe4f1; --bg-btm:#ffd9ec; --accent:#c85c8e; --ink:#3a2432; --ink-soft:#5a3a4a;
+  --bg-top-a:#fff1f611; --bg-mid-a:#ffe4f1b3; --bg-btm-a:#ffd9ecb3;
   --bg-image: url("../assets/bg/meixiang.jpg");
 }
 body[data-theme="dongzhuan"]{
   --bg-top:#fff7e8; --bg-mid:#ffeacf; --bg-btm:#ffdfb6; --accent:#b57a3f; --ink:#3a2a18; --ink-soft:#5b4330;
+  --bg-top-a:#fff7e811; --bg-mid-a:#ffeacfb3; --bg-btm-a:#ffdfb6b3;
   --bg-image: url("../assets/bg/dongzhuan.jpg");
 }
 
 /* 页面切换时的柔和过渡（叠加在 reveal 之上） */
-body.switching .hero{ animation: cardGlow 900ms ease both }
+body.switching .hero{ animation: cardGlow 1000ms ease both }
 @keyframes cardGlow{
   0%{ box-shadow: 0 0 0 rgba(0,0,0,0) }
   30%{ box-shadow: 0 18px 60px rgba(31,42,68,0.25) }
@@ -106,7 +113,7 @@ body.switching .hero{ animation: cardGlow 900ms ease both }
   transform: translateX(-110%) rotate(-2deg);
   filter: blur(0.5px);
 }
-#themeReveal.revealing{ animation: revealSweep 900ms cubic-bezier(.2,.8,.2,1) forwards }
+#themeReveal.revealing{ animation: revealSweep 1000ms cubic-bezier(.2,.8,.2,1) forwards }
 @keyframes revealSweep{
   0%{ opacity:.0; transform: translateX(-110%) rotate(-2deg) }
   10%{ opacity:.95 }
