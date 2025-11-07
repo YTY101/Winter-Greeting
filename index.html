@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#eaf3ff" />
+  <title>立冬祝福 · Start of Winter Blessings</title>
+  <meta name="description" content="立冬快乐！愿你冬日温暖如春。Start of Winter blessings with animated snow, modern Chinese aesthetic, and warm wishes."/>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <canvas id="snow" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="seal" aria-hidden="true"></div>
+        <div>立冬 · Blessings</div>
+      </div>
+      <div class="controls">
+        <button id="musicToggle" class="btn" aria-label="播放或暂停背景音乐">🎵 背景音乐</button>
+        <label class="volume">
+          <span>音量</span>
+          <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.6" />
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Start of Winter greetings">
+        <div class="flake-bg" aria-hidden="true"></div>
+        <h1 class="title">立冬快乐!</h1>
+        <p id="subtitle" class="subtitle" aria-live="polite"></p>
+        <div id="tagline" class="tagline">一候水始冰，二候地始冻，三候雉入大水为蜃。</div>
+
+        <!-- 四主题：点击切换页面风格 + 背景音乐 -->
+        <div class="ornaments" role="group" aria-label="主题切换">
+          <button class="chip-btn" data-theme="xuehua" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#5b7bb9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2v20M4 6l16 12M20 6L4 18M2 12h20" opacity=".6"/>
+              <circle cx="12" cy="12" r="2" fill="#5b7bb9"/>
+            </svg>
+            <span>雪华</span>
+          </button>
+
+          <button class="chip-btn" data-theme="dengying" aria-pressed="false">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <defs>
+                <linearGradient id="lantern" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#ff6978"/>
+                  <stop offset="100%" stop-color="#d6373f"/>
+                </linearGradient>
+              </defs>
+              <rect x="22" y="10" width="20" height="32" rx="10" fill="url(#lantern)" stroke="#9a1e24"/>
+              <rect x="28" y="42" width="8" height="4" rx="2" fill="#9a1e24"/>
+              <line x1="32" y1="46" x2="32" y2="54" stroke="#9a1e24" stroke-width="2"/>
+              <circle cx="32" cy="56" r="2" fill="#9a1e24"/>
+            </svg>
+            <span>灯影</span>
+          </button>
+
+          <button class="chip-btn" data-theme="meixiang" aria-pressed="false">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <circle cx="32" cy="32" r="8" fill="#e58bb3"/>
+              <g fill="#f2a9c8">
+                <circle cx="16" cy="28" r="10"/>
+                <circle cx="48" cy="28" r="10"/>
+                <circle cx="22" cy="46" r="10"/>
+                <circle cx="42" cy="46" r="10"/>
+              </g>
+              <circle cx="32" cy="32" r="2" fill="#7a3f58"/>
+            </svg>
+            <span>梅香</span>
+          </button>
+
+          <button class="chip-btn" data-theme="dongzhuan" aria-pressed="false">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M10 38c2-12 12-20 22-20s20 8 22 20H10z" fill="#f6e6d3" stroke="#d9c2a4"/>
+              <path d="M16 30c6-6 26-6 32 0" stroke="#d9c2a4" fill="none"/>
+            </svg>
+            <span>冬馔</span>
+          </button>
+        </div>
+
+        <!-- Blessing card -->
+        <div class="blessing-card" role="region" aria-label="Warm blessing">
+          <div id="blessing" class="blessing-text">点击下方按钮，收下一句冬日祝福。</div>
+          <div class="actions">
+            <button id="newBlessing" class="btn" type="button" aria-label="随机祝福">收下祝福</button>
+            <span class="note">温柔提示：点击主题按钮可切换风格与音乐</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>© <span id="year"></span> 立冬 · Start of Winter — May your heart stay warm.</footer>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
